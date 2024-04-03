@@ -3,12 +3,13 @@ import {
   login,
   register,
   validateToken,
-} from "../controllers/userControllers.js";
+} from "../controllers/authControllers.js";
+import { isResetTokenValid } from "../middlewares/revalidate-token.js";
 
 const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
-router.get("/validate-token", validateToken);
+router.get("/validate-token", isResetTokenValid, validateToken);
 
 export default router;

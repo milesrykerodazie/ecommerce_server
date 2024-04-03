@@ -20,10 +20,6 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter your password"],
     },
-    sex: {
-      type: String,
-      required: [true, "Please enter your gender"],
-    },
     bio: {
       type: String,
       default: "",

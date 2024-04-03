@@ -9,7 +9,6 @@ const register = async (req, res) => {
       !req.body.name ||
       !req.body.email ||
       !req.body.username ||
-      !req.body.sex ||
       !req.body.password
     ) {
       res.status(400).json({
@@ -18,6 +17,8 @@ const register = async (req, res) => {
       });
       return;
     }
+
+    console.log("the body => ", req.body);
 
     //check for already existing email
     const existingEmail = await User.findOne({ email: req.body.email }).exec();
@@ -50,11 +51,10 @@ const register = async (req, res) => {
       password: encrypedPassword,
       name: req.body.name,
       email: req.body.email,
-      username: req.body.User,
-      sex: req.body.sex,
+      username: req.body.username,
     });
 
-    const { password, ...rest } = newUser;
+    const { password, ...rest } = newUser._doc;
     res.status(201).json({
       success: true,
       message: "User Registered successfully.",
@@ -117,16 +117,22 @@ const login = async (req, res) => {
     }
   );
 
+  const userData = {
+    name: validEmail?.name,
+    username: validEmail?.username,
+    bio: validEmail?.bio,
+    admin: validEmail?.isAdmin,
+    phone_number: validEmail?.phone_number,
+  };
+
   //push to cookies
   res.cookie("hellomiss", accessToken, {
     httpOnly: true,
-    secure: true,
     sameSite: "none",
-    maxAge: 5 * 60 * 1000,
+    maxAge: 60 * 1000,
   });
   res.cookie("hellobro", refreshToken, {
     httpOnly: true,
-    secure: true,
     sameSite: "none",
     maxAge: 1 * 24 * 60 * 60 * 1000,
   });
@@ -134,14 +140,14 @@ const login = async (req, res) => {
   return res.status(200).json({
     success: true,
     message: "Login successful.",
+    user: userData,
   });
 };
 
 const validateToken = (req, res) => {
-  const found = req.cookies;
-  console.log("the found => ", found.hellobro);
-  res.status(200).json({
-    message: "api hit",
+  return res.status(200).json({
+    valid: true,
+    message: "access granted",
   });
 };
 
