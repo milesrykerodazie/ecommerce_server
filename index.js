@@ -23,7 +23,10 @@ app.use("/user", userRoute);
 mongoose
   .connect(db)
   .then(() => {
-    app.listen(MYPORT, () => {});
+    console.log("Connected to DB");
+    app.listen(MYPORT, () => {
+      console.log(`Listening to port ${MYPORT}`);
+    });
   })
   .catch(() => {
     console.log("Not Connected TO DATABASE");
