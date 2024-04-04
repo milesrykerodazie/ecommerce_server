@@ -150,9 +150,20 @@ const login = async (req, res) => {
 };
 
 const validateToken = (req, res) => {
+  const authUser = req.user;
+  const userData = {
+    _id: authUser._id,
+    name: authUser.name,
+    username: authUser.username,
+    email: authUser.email,
+    bio: authUser.bio,
+    phone_number: authUser.phone_number,
+    isAdmin: authUser.isAdmin,
+  };
   res.status(200).json({
     valid: true,
     message: "access granted",
+    details: userData,
   });
 };
 

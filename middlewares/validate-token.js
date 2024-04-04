@@ -47,6 +47,9 @@ export const checkAndRenewToken = (req, res, next) => {
             sameSite: "none",
             maxAge: 60 * 1000,
           });
+          const { password, ...rest } = validuser._doc;
+
+          req.user = rest;
           next(); // Call next middleware
         }
       });
@@ -67,6 +70,9 @@ export const checkAndRenewToken = (req, res, next) => {
             .status(404)
             .json({ valid: false, message: "No valid Details found" });
         }
+        const { password, ...rest } = validuser._doc;
+
+        req.user = rest;
         next(); // Call next middleware
       }
     });

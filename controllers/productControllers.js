@@ -1,10 +1,16 @@
 import Product from "../models/product.model.js";
 
 const createProduct = async (req, res) => {
+  const authUser = req.user;
   const productData = req.body;
   console.log("the product data => ", productData);
 
   try {
+    if (req.user.isAdmin === false) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Unauthorized user" });
+    }
     const blablabla = req.body.name;
     const existingProduct = await Product.findOne({ name: blablabla }).exec();
     console.log("existing product => ", existingProduct);
@@ -17,7 +23,10 @@ const createProduct = async (req, res) => {
       });
     }
 
-    const product = await Product.create(req.body);
+    const product = await Product.create({
+      product_owner: authUser._id,
+      ...req.body,
+    });
     res.status(201).json({
       success: true,
       message: "Product created successfully.",
@@ -33,7 +42,13 @@ const createProduct = async (req, res) => {
 };
 
 const allProducts = async (req, res) => {
+  console.log("from the allproducts request => ", req.user);
   try {
+    if (req.user.isAdmin === false) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Unauthorized user" });
+    }
     const products = await Product.find({});
     res.status(200).json({
       success: true,

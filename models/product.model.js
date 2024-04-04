@@ -2,6 +2,10 @@ import mongoose, { model } from "mongoose";
 
 const ProductSchema = mongoose.Schema(
   {
+    product_owner: {
+      type: String,
+      required: [true, "Product owner required"],
+    },
     name: {
       type: String,
       required: [true, "Please enter the product name"],
