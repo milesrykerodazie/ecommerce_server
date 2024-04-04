@@ -129,14 +129,14 @@ const login = async (req, res) => {
   res.cookie("hellomiss", accessToken, {
     httpOnly: true,
     secure: true,
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: 60 * 1000,
   });
 
   res.cookie("hellobro", refreshToken, {
     httpOnly: true,
     secure: true,
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: 1 * 24 * 60 * 60 * 1000,
   });
 

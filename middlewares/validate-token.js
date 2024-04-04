@@ -44,7 +44,7 @@ export const checkAndRenewToken = (req, res, next) => {
           res.cookie("hellomiss", accessToken, {
             httpOnly: true,
             secure: true,
-            sameSite: "lax",
+            sameSite: "none",
             maxAge: 60 * 1000,
           });
           next(); // Call next middleware
