@@ -102,7 +102,7 @@ const login = async (req, res) => {
     },
     process.env.BLABLA,
     {
-      expiresIn: "5m",
+      expiresIn: "60s",
     }
   );
 
@@ -128,14 +128,19 @@ const login = async (req, res) => {
   //push to cookies
   res.cookie("hellomiss", accessToken, {
     httpOnly: true,
+    secure: true,
     sameSite: "none",
     maxAge: 60 * 1000,
   });
+
   res.cookie("hellobro", refreshToken, {
     httpOnly: true,
+    secure: true,
     sameSite: "none",
     maxAge: 1 * 24 * 60 * 60 * 1000,
   });
+
+  console.log("the user data => ", userData);
 
   return res.status(200).json({
     success: true,
@@ -145,7 +150,7 @@ const login = async (req, res) => {
 };
 
 const validateToken = (req, res) => {
-  return res.status(200).json({
+  res.status(200).json({
     valid: true,
     message: "access granted",
   });
